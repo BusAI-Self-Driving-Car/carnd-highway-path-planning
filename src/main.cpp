@@ -73,18 +73,18 @@ int NextWaypoint(double x, double y, double theta, const vector<double> &maps_x,
 	double heading = atan2((map_y-y),(map_x-x));
 
 	double angle = fabs(theta-heading);
-  angle = min(2*pi() - angle, angle);
+    angle = min(2*pi() - angle, angle);
 
-  if(angle > pi()/4)
-  {
-    closestWaypoint++;
-  if (closestWaypoint == maps_x.size())
-  {
-    closestWaypoint = 0;
-  }
-  }
+    if(angle > pi()/4)
+    {
+      closestWaypoint++;
+      if (closestWaypoint == maps_x.size())
+      {
+        closestWaypoint = 0;
+      }
+    }
 
-  return closestWaypoint;
+    return closestWaypoint;
 }
 
 // Transform from Cartesian x,y coordinates to Frenet s,d coordinates
@@ -243,14 +243,14 @@ int main() {
           	vector<double> next_x_vals;
           	vector<double> next_y_vals;
 
-            double dist_inc = 0.5;
+          	// TODO: define a path made up of (x,y) points that the car will visit sequentially every .02 seconds
+          	double dist_inc = 0.5;
             for(int i = 0; i < 50; i++)
             {
               next_x_vals.push_back(car_x+(dist_inc*i)*cos(deg2rad(car_yaw)));
               next_y_vals.push_back(car_y+(dist_inc*i)*sin(deg2rad(car_yaw)));
             }
 
-          	// TODO: define a path made up of (x,y) points that the car will visit sequentially every .02 seconds
           	msgJson["next_x"] = next_x_vals;
           	msgJson["next_y"] = next_y_vals;
 
