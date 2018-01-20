@@ -217,6 +217,12 @@ int main() {
         auto j = json::parse(s);
         
         string event = j[0].get<string>();
+
+        // start in lane 1
+        int lane = 1;
+
+        // have a reference velocity to target
+        double ref_vel = 49.5; // mph
         
         if (event == "telemetry") {
           // j[1] is the data JSON object
@@ -239,15 +245,44 @@ int main() {
           	// Sensor Fusion Data, a list of all other cars on the same side of the road.
           	auto sensor_fusion = j[1]["sensor_fusion"];
 
+          	int prev_size = previous_path_x.size();
+
+          	if(prev_size > 0)
+          	{
+          	  car_s = end_path_s;
+          	}
+
+          	bool too_close = false;
+
+          	// find ref_v to use
+          	for(int i = 0; i < sensor_fusion.size(); i++)
+          	{
+          	  // cat is in my lane
+          	  float d = sensor_fusion[i][6];
+          	  if(d < 2+4*lane+2 && d > 2+4*lane-2)
+          	  {
+          	    double vx = sensor_fusion[i][3];
+          	    double vy = sensor_fusion[i][4];
+          	    double check_speed = sqrt(vx*vx + vy*vy);
+          	    double check_car_s = sensor_fusion[i][5];
+
+          	    check_car_s += (double)prev_size * 0.02 * check_speed; // if using previous points can project s value out
+
+          	    // check s value greater than mine and s gap
+          	    if(check_car_s > car_s && (check_car_s - car_s) < 30.0)
+          	    {
+          	      // do some logic here
+          	      // lower reference velocity so we don't crash into the car in front of us
+          	      // could also flag to change lanes
+          	      ref_vel = 29.5; // mph
+          	      // too_close = true
+          	    }
+          	  }
+          	}
+
             // TODO: define a path made up of (x,y) points that the car will visit sequentially every .02 seconds
 
-            // start in lane 1
-            int lane = 1;
 
-            // have a reference velocity to target
-            double ref_vel = 49.5; // mph
-
-          	int prev_size = previous_path_x.size();
 
           	// create a list of widely spaced (x, y) waypoints, evenly spaced at 30m
           	// later we will interpolate these waypoints with a spline and fill it in with more points
