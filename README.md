@@ -1,6 +1,81 @@
 # CarND-Path-Planning-Project
 Self-Driving Car Engineer Nanodegree Program
-   
+
+## Path Planning Project Report
+
+[Rubic](https://review.udacity.com/#!/rubrics/1020/view)
+
+### Compilation
+
+The code compiles correctly.
+
+### Valid trajectories
+
+#### The car is able to drive at least 4.32 miles without incident.
+
+The car drove * miles without incidents.
+
+![](./images/screenshot.png)
+
+#### The car drives according to the speed limit.
+
+No speed limit red message was seen.
+
+#### Max Acceleration and Jerk are not Exceeded.
+
+Max jerk red message was not seen.
+
+#### Car does not have collisions.
+
+No collisions.
+
+#### The car stays in its lane, except for the time between changing lanes.
+
+The car stays in its lane most of the time but when it changes lane because of traffic or to return to the center lane.
+
+### The car is able to change lanes
+
+The car change lanes when the there is a slow car in front of it, and it is safe to change lanes (no other cars around) or when it is safe to return the center lane.
+
+### Reflection
+
+Based on the provided code from the seed project, the path planning algorithms start at [src/main.cpp](./src/main.cpp#L246) line 257 to the line 446. The code could be separated into different functions to show the overall process, but I prefer to have everything in a single place to avoid jumping to different parts of the file or other files. In a more complicated environment and different requirements, more structure could be used. For now, comments are provided to improve the code readability.
+
+The code consist of three parts:
+
+#### Prediction [line 25564 to line 290](./src/main.cpp#L264)
+
+This part of the code deal with the telemetry and sensor fusion data. It intents to reason about the environment. In the case, we want to know three aspects of it:
+
+- Is there a car in front of the ego car being too close?
+- Is there a car to the right of the ego car preventing a lane change not safe?
+- Is there a car to the left of the ego car preventing a lane change not safe?
+
+These questions are answered by calculating the lane each other car is and the position it will be at the end of the last plan trajectory. A car is considered "dangerous" when its distance to our car is less than 30 meters in front or behind us.
+
+#### Behavior Planner [line 292 to line 314](./scr/main.cpp#L306)
+
+This part decides what is next to do:
+
+- Keep Lane
+- Change Left
+- Change Right
+- Slow Down
+
+Based on the prediction of the situation we are in, this code increases the speed, decrease speed, or make a lane change when it is safe.
+
+#### Generate Trajectory [line 317 to line 416](./scr/main.cpp#L330)
+
+This code does the calculation of the trajectory based on the speed and lane output from the behavior, car coordinates and past path points.
+
+First, the last two points of the previous trajectory (or the car position if there are no previous trajectory) are used in conjunction three points at a far distance to initialize the spline calculation. To make the work less complicated to the spline calculation based on those points, the coordinates are transformed to local car coordinates.
+
+In order to ensure more continuity on the trajectory (in addition to adding the last two point of the pass trajectory to the spline adjustment), the pass trajectory points are copied to the new trajectory. The rest of the points are calculated by evaluating the spline and transforming the output coordinates to not local coordinates. Worth noticing the change in the velocity of the car from line 393 to 398. The speed change is decided on the behavior part of the code, but it is used in that part to increase/decrease speed on every trajectory points instead of doing it for the complete trajectory.
+
+=====================================================================================
+
+## Udacity Readme
+
 ### Simulator.
 You can download the Term3 Simulator which contains the Path Planning Project from the [releases tab (https://github.com/udacity/self-driving-car-sim/releases).
 
