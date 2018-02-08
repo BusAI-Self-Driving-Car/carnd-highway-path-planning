@@ -304,7 +304,6 @@ int main() {
           	}
 
             // Behavior Planner: decide next move
-            double speed_diff = 0;
             const double MAX_SPEED = 49.5;
             const double MAX_ACC = .224;
             if (car_in_front) { // Car ahead
@@ -315,7 +314,7 @@ int main() {
                 // if there is no car right and there is a right lane.
                 lane++; // Change lane right.
               } else {
-                speed_diff -= MAX_ACC;
+                ref_vel -= MAX_ACC;
               }
             } else {
               if (lane != 1) { // if we are not on the center lane.
@@ -324,7 +323,7 @@ int main() {
                 }
               }
               if (ref_vel < MAX_SPEED) {
-                speed_diff += MAX_ACC;
+                ref_vel += MAX_ACC;
               }
             }
 
