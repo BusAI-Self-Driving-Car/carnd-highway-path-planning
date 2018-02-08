@@ -13,7 +13,7 @@ The code compiles correctly.
 
 #### The car is able to drive at least 4.32 miles without incident.
 
-The car drove * miles without incidents.
+The car drove 10 miles without incidents.
 
 ![](./images/screenshot.png)
 
@@ -43,7 +43,7 @@ Based on the provided code from the seed project, the path planning algorithms s
 
 The code consist of three parts:
 
-#### Prediction [line 25564 to line 290](./src/main.cpp#L264)
+#### Prediction [line 264 to line 290](./src/main.cpp#L264)
 
 This part of the code deal with the telemetry and sensor fusion data. It intents to reason about the environment. In the case, we want to know three aspects of it:
 
