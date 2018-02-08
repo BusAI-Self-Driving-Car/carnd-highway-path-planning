@@ -53,7 +53,7 @@ This part of the code deal with the telemetry and sensor fusion data. It intents
 
 These questions are answered by calculating the lane each other car is and the position it will be at the end of the last plan trajectory. A car is considered "dangerous" when its distance to our car is less than 30 meters in front or behind us.
 
-#### Behavior Planner [line 292 to line 314](./scr/main.cpp#L306)
+#### Behavior Planner [line 292 to line 314](./src/main.cpp#L306)
 
 This part decides what is next to do:
 
@@ -64,7 +64,7 @@ This part decides what is next to do:
 
 Based on the prediction of the situation we are in, this code increases the speed, decrease speed, or make a lane change when it is safe.
 
-#### Generate Trajectory [line 317 to line 416](./scr/main.cpp#L330)
+#### Generate Trajectory [line 317 to line 416](./src/main.cpp#L330)
 
 This code does the calculation of the trajectory based on the speed and lane output from the behavior, car coordinates and past path points.
 
