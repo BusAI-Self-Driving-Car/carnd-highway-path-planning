@@ -1,4 +1,5 @@
-# CarND-Path-Planning-Project
+# Highway Path Planning
+
 Self-Driving Car Engineer Nanodegree Program
 
 ## Path Planning Project Report
